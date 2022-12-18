@@ -20,7 +20,7 @@ install.packages(here)
 require(here)
 
 ginkgo<- read.csv(here("Eco602", "environmental_data", "data", "ginkgo_data_2021.csv"))
-
+penguins<- palmerpenguins::penguins
 ```
 In this section, I have loaded my built in data (palmerpenguins), installed the "here" package, require said package and then used that function and read.csv to load it into a dataframe called gingko. with the here function you can specify in which folders the document lives
 
@@ -131,3 +131,67 @@ This function tells us what the standard deviation of our data looks like. Again
 sd(ginkgo$max_width)
 ```
 In this example, R tells us the standard deviation of our max_width is 16.42.
+
+##Graphical Data Exploration
+## The Plot Function
+
+The plot function creates a scatterplot for us. You must specify what you want your x and y data to be using our subsetting functions.Our x goes first followed by the Y.
+```{r}
+plot(ginkgo$max_depth, ginkgo$max_width, col= "blue", main= "Ginkgo Depth Vs. Width", pch=45, cex=.7, xlab = "Depth(mm)", ylab = "Width(mm)", ylim = NULL, xlim= NULL)
+```
+### The Histogram Function
+This function allows us to create a histogram. The breaks argument allows us to change the number of breaks between each bar.
+```{r}
+
+hist(penguins$flipper_length_mm, breaks = 25)
+```
+### The Boxplot and Par Function
+The Boxplot function allows us to make a boxplot from any data set. You can also use the Par function to create multiple panels with multiple graphs. You can also create conditional box plots where you can specify specific categories to base the plot on. Here's two examples of each
+```{r}
+boxplot(ginkgo$petiole_length, main= "regular box plot")
+boxplot(ginkgo$max_width ~ ginkgo$seeds_present, main="Conditional box plot")
+```
+Now let's creat a four panel figure of histograms
+```{r}
+par(mfrow=c(2,2))
+  hist(penguins$body_mass_g, breaks = 80, main = "Histogram of Body Mass", xlab = "body mass (g)")
+  hist(penguins$flipper_length_mm, breaks = 25, main = "Histogram of Flipper Length", xlab = "Flipper Length (mm)")
+  hist(penguins$bill_depth_mm, main = "Histogram of Bill Depth", xlab = "Bill Depth (mm)")
+  hist(penguins$bill_length_mm, main="Histogram of Bill Length", xlab="Bill Length (mm)")
+```
+## Distribution Functions
+### The Probability Density Function
+This function is used when predicting the likelihood of an exact event in a continuous distribution.
+```{r}
+dnorm(7.5, mean =10, sd= 3 )
+```
+In this example, we have a 9% chance of observing a value of exactly 7.5.
+###The Cumulative Density Function
+This function is used when predicting the likelihood of an event occurring within some range in a continuous distribution.
+```{r}
+pnorm(7.5, mean = 10, sd= 3)
+```
+In this example, we have a 20% chance of observing a value of 7.5 or less.
+### The Quantile Function (continuous)
+This function is used when trying to figure out a percentile within a continuous distribution.
+```{r}
+qnorm(0.75, mean= 10, sd= 3)
+```
+In this example we're looking for the 75th percentile which begins at 12.02.
+###The Probability Mass Function
+This function is used when predicting the likelihood of observing an exact value in a discrete distribution.
+```{r}
+dbinom(3, 4, 0.75)
+```
+In this example, the probability of observing exactly 3 in a discrete distribution of a sample size of 4 and 75% probability is 42%.
+###The Cumulative Mass Function
+This function allows us to predict an observation will fall within a certain range.
+```{r}
+pbinom(3, 4, 0.75)
+```
+In this example, the probability of observing a value of 3 or less is 68%
+###The Quantile Function (Discrete Distribution)
+```{r}
+qbinom(0.75, 4, 0.75)
+```
+In this example, the 75th percentile begins at the value 4 for this discrete distribution.
