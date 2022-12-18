@@ -1,0 +1,12 @@
+---
+title: "Nikki's Project homepage"
+author: "Nicole Yunes Perez"
+date: "2022-12-18"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Welcome to Nikki's Homepage!
