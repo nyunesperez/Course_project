@@ -9,22 +9,125 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+# R Reference Guide {.tabset .tabset-pills}
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Loading Data and Packages
 
-```{r cars}
-summary(cars)
+```{r}
+library(palmerpenguins)
+install.packages(here)
+require(here)
+
+ginkgo<- read.csv(here("Eco602", "environmental_data", "data", "ginkgo_data_2021.csv"))
+
+```
+In this section, I have loaded my built in data (palmerpenguins), installed the "here" package, require said package and then used that function and read.csv to load it into a dataframe called gingko. with the here function you can specify in which folders the document lives
+
+## Data Structures
+
+### The C function
+The function c() combines or concatenates its arguments into a vector (a 1-dimensional data structure consisting of 1 or more elements).
+
+All of the elements must be of the same type.
+I can’t combine character and numeric types in the same call to c()
+Here’s two examples using numeric and character data types:
+```{r}
+num_vec  = c(1, 4, 8, 9, 13)
+
+char_vec = c("a", "fish", "data is cool")
+```
+I can show the contents of a vector by typing the name of the vector, or using the print() function.
+
+```{r}
+num_vec
+```
+[1]  1  4  8  9 13
+```{r}
+print(char_vec)
+```
+[1] "a"            "fish"         "data is cool"
+
+###The Length Function
+The function length() tells us the length of a vector. For example, when used with our previous vector:
+
+```{r}
+length(num_vec)
+
+```
+Here the function length() tells us that there are 5 numbers in this vector.
+
+### The Matrix Function
+
+This function allows us to build a matrix, with any specified number of rows and columns. You must specify which data you will use for this matrix.
+
+```{r}
+number_matrix<- matrix(num_vec, 1, 5)
+char_matrix<- matrix(char_vec, 1, 3)
 ```
 
-## Including Plots
+So in this example, I've created a matrix with our previous number vector and put those numbers into a matrix with 1 row and 5 columns. The number of rows and columns must be a multiple of the data length, in this case that is 5.
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+### The data.frame Function
+```{r}
+num_df<- data.frame(number_matrix, char_matrix)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+This function allows us to create a dataframe and congregate multiple matrices togethe. This is usually the level which we perform data analysis at.
+
+### Ginkgo nrow
+```{r}
+nrow(ginkgo)
+```
+This function is fairly simple, and it just tells us the number of rows in any object already defined. In this case it is 756 rows.
+
+### Ginkgo ncol
+```{r}
+ncol(ginkgo)
+```
+This function tells us the number of columns in any specified object. In this case, there are 6 rows.
+
+### Ginkgo dim
+```{r}
+dim(ginkgo)
+```
+The dim() function tells us both the number of rows and the number of columns. It first lists the number of rows and then the number of columns.
+
+## Subsetting
+### $ for subsetting
+We can use the '$' symbol to subset a part of our dataframe using the name of the row or column. 
+```{r}
+seeds<- ginkgo$seeds_present
+```
+In this example we've subsetted only the column which tells us if there are any seeds present.
+### [] for subsetting
+We can also use brackets to specify a specific row/column or combination of those.
+```{r}
+first.row.ginkgo<- ginkgo[1,]
+row.2.col.3.ginkgo<- ginkgo[2,3]
+third.col.ginkgo<- ginkgo[,3]
+```
+If you would only like to select an entire row or column, you must use an empty space and comma to represent no row/column was selected.
+
+##Numerical Data Exploration
+
+###Summary Function
+If you would like to see a quick summary of your data, the summary function gives you a quick snapshot of some simple data exploration of your dataframe.
+```{r}
+summary(ginkgo)
+```
+This function will give you a range, mean, mode, and median of all the matrices in your dataframe.
+
+###Mean Function
+This function is pretty self explanatory. It tells you the mean/average of your specified dataset. You must specify which column you would like a mean of if there are multiple columns in your dataset.
+```{r}
+mean(ginkgo$max_width)
+```
+In this example, I've specified that I'd like to know the mean of the max_width for my ginkgo dataset and R tells us the mean is 74.34.
+You can also find this information from the summary function.
+### Standard Deviation Function
+This function tells us what the standard deviation of our data looks like. Again, you must specify which column you would like to look at.
+```{r}
+sd(ginkgo$max_width)
+```
+In this example, R tells us the standard deviation of our max_width is 16.42.
